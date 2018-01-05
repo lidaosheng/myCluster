@@ -12,8 +12,8 @@ specClust<-function(data,k=10){
 }
 #可以优化对称三角形，先放着
 getSimData<-function(data,segma=1){
-  distMatrix<-as.matrix(dist(data))
-  distMatrix<-exp(-distMatrix^2/(2*segma^2))
+  distMatrix<-as.matrix(dist(data)) #dist求得是行之间的距离，即样本距离
+  distMatrix<-exp(-distMatrix^2/(2*segma^2)) #高斯核函数
   return(distMatrix)
 }
 getWbyKNN<-function(simData,k=10){
@@ -67,15 +67,28 @@ getEigen2<-function(L){
   }
   U<-L.vectors[,(ncol(L.vectors)-k+1):ncol(L.vectors)]
 }
+#展示2维
 showClust<-function(data,cluster){
+  maxX<-max(data[,1])
+  minX<-min(data[,1])
+  maxY<-max(data[,2])
+  minY<-min(data[,2])
   colors<-c("green","blue","yellow","grey","pink","purple")
   clusts<-unique(cluster)
   datas<-lapply(clusts,function(x){data2<-data[which(cluster==x),]})
-  plot(datas[[1]],col="red")
+  plot(datas[[1]],col="red",xlim = c(minX, maxX),ylim = c(minY, maxY))
   if(length(datas)>1){
     for(i in 2:length(datas)){
       points(datas[[i]],col=colors[i-1])
     }
   }
 
+}
+chooseK<-function(data,type=1){
+  if(type==1){
+    out<-hclust(dist(data),method = "average")
+  }else{
+    out<-hclust(as.dist(data),method = "average")
+  }
+  plot(out)
 }
