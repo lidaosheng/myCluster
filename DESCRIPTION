@@ -1,0 +1,10 @@
+Package: myCluster
+Type: Package
+Title: data mining
+Version: 0.1.0
+Author: lifei
+Maintainer: <843168906@qq.com>
+Description: for improve wgcna
+License: Personal
+Encoding: UTF-8
+LazyData: true
