@@ -61,9 +61,21 @@ getEigen2<-function(L){
   #绘制特征值帮助选则
   plot(c(1:length(L.values)),L.values)
   k<-0
-  while(k<=0|k>ncol(L.values)|!is.integer(k)){
-    k<-readline(paste("输入划分的簇数,最大不超过 ",length(L.values," :")))
+  while(k<=0|k>ncol(L.vectors)|!is.integer(k)){
+    k<-readline(paste("输入划分的簇数,最大不超过 ",length(L.values)," :"))
     k<-as.integer(k)
   }
   U<-L.vectors[,(ncol(L.vectors)-k+1):ncol(L.vectors)]
+}
+showClust<-function(data,cluster){
+  colors<-c("green","blue","yellow","grey","pink","purple")
+  clusts<-unique(cluster)
+  datas<-lapply(clusts,function(x){data2<-data[which(cluster==x),]})
+  plot(datas[[1]],col="red")
+  if(length(datas)>1){
+    for(i in 2:length(datas)){
+      points(datas[[i]],col=colors[i-1])
+    }
+  }
+
 }
