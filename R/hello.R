@@ -2,8 +2,12 @@ hello <- function() {
   print("Hello, world!")
 }
 #行样本，列特征，对样本聚类
-specClust<-function(data,k=10){
-  simData<-getSimData(data)
+specClust<-function(data,type="expr",k=10){
+  if(type=="expr"){
+    simData<-getSimData(data)
+  }else{
+    simData<-data
+  }
   W<-getWbyKNN(simData,k)
   L<-getL2(W)
   U<-getEigen2(L)
@@ -12,6 +16,7 @@ specClust<-function(data,k=10){
 }
 #可以优化对称三角形，先放着
 getSimData<-function(data,segma=1){
+  data<-scale(data,center=T,scale = T)
   distMatrix<-as.matrix(dist(data)) #dist求得是行之间的距离，即样本距离
   distMatrix<-exp(-distMatrix^2/(2*segma^2)) #高斯核函数
   return(distMatrix)
